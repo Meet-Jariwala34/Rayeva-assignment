@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+*{
+    overflow-x: hidden ;
+}
+
+
+
+.montserrat{
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+nav{
+    position: absolute;
+    top: 2%;
+    left: 10%;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 1rem;
+}
+
+#home-hero{
+    background-image: url('./assets/home-hero.jpg');
+    background-size:cover;
+    background-position: center;
+}
+
+#middle{
+    background-color: orange;
+}
+
+img{
+    overflow-y: hidden;
+    object-fit: cover;
+}
+
+footer{
+    background-color: #1a1a1a;
+    height : 80vh;
+    color: whitesmoke;
+}
+
+.slide1{
+    background-image: url('./assets/slide1.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.slide2{
+    background-image: url('./assets/slide2.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.slide1 button{
+    background-color: rgb(255, 197, 90) ;
+}
+
+.slide1 button:hover{
+    background-color:orange;
+}
+
+.slide2 button{
+    background-color: lightgreen;
+}
+
+.slide2 button:hover{
+    background-color: rgb(80, 231, 80);
+}
