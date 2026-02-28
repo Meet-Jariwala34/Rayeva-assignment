@@ -2,8 +2,8 @@ import React from 'react'
 
 export default function Footer() {
   return (
-    <footer className='w-screen '>
-      <div className='h-8/10 w-screen flex justify-evenly items-center flex-col gap-5 '>
+    <footer className='w-full '>
+      <div className='h-8/10 w-full flex justify-evenly items-center flex-col gap-5 '>
         <div className='montserrat text-5xl font-extrabold w-auto h-auto overflow-hidden'>CONTACT US</div>
         <div>
           <div className='text-2xl font-thin w-auto h-auto overflow-hidden'>Email:officialmeetjariwala@gmail.com</div>

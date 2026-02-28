@@ -1,11 +1,11 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import {useGSAP} from '@gsap/react'
 import {gsap} from 'gsap'
 import {ScrollTrigger} from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Fact() {
-
 
   useGSAP( () =>{
     gsap.from('.slide1', {
@@ -38,11 +38,13 @@ export default function Fact() {
 
         <div className='slide1 h-full w-1/3 gap-8 flex flex-col justify-center items-center text-black'>
           <div className='montserrat font-bold text-5xl text-center overflow-hidden'>EMPLOYEE <br/> PORTAL</div>
-          <div className='hover:scale-110'><button type="button" class="h-10 w-auto overflow-hidden px-8 cursor-pointer font-bold bg-white text-black rounded-3xl ">Login</button></div>
+          <div className='hover:scale-110'>
+            <Link to='/admin-login' className='overflow-hidden'><button type="button" class="h-10 w-auto overflow-hidden px-8 cursor-pointer font-bold bg-white text-black rounded-3xl ">Login</button></Link>
+          </div>
         </div>
 
-        <div id='middle' className='h-full w-1/3 text-white flex justify-center items-center text-5xl font-bold z-10'>
-          <div className='h-1/3 w-6/10 montserrat text-center'>
+        <div id='middle' className='h-full w-1/3 text-white flex justify-center items-center text-5xl font-bold z-4'>
+          <div className='h-1/3 w-6/10 montserrat text-center overflow-hidden'>
             <h1 className='overflow-hidden'>JOIN US</h1>
             <p className='text-2xl font-thin'>Track and Manage Environment Friendly products</p>
           </div>
@@ -50,7 +52,9 @@ export default function Fact() {
 
         <div className='slide2 h-full w-1/3 gap-8 flex flex-col justify-center items-center text-black'>
           <div className='montserrat font-bold text-5xl text-center overflow-hidden'>CUSTOMER <br /> SUPPORT </div>
-          <div className='hover:scale-110'><button type="button" class="h-10 w-auto overflow-hidden px-8 cursor-pointer font-bold bg-white text-black rounded-3xl">Login</button></div>
+          <div className='hover:scale-110'>
+            <Link to='/login' className='overflow-hidden'><button type="button" class="h-10 w-auto overflow-hidden px-8 cursor-pointer font-bold bg-white text-black rounded-3xl">Login</button></Link>
+          </div>
         </div>
       </div>
     </div>

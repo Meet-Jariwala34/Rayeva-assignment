@@ -69,3 +69,16 @@ footer{
 .slide2 button:hover{
     background-color: rgb(80, 231, 80);
 }
+
+.hero-btn:hover{
+    background-color: rgb(4, 174, 4);
+    transform: scale(1.1);
+}
+
+#login-card-left{
+    border : 1vmax solid white;
+}
+
+.results-area{
+    box-shadow: 1px 1px 20px white;
+}
