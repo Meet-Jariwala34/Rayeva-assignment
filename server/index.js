@@ -6,7 +6,8 @@ const connectDB = require('./config/db');
 const loginRoute = require('./routes/login.route');
 const cors = require('cors');
 const aiRoute = require('./routes/ai.route');
-
+const orderRoute = require('./routes/order.route');
+const chatsRoute = require('./routes/chat.route')
 
 //middleware
 app.use(express.json());
@@ -23,4 +24,6 @@ app.listen(PORT , () => {
 //routes
 app.use("/api", loginRoute);
 app.use("/ai",aiRoute);
+app.use("/order/api",orderRoute);
+app.use("/customer/ai", chatsRoute)
 

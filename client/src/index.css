@@ -82,3 +82,17 @@ footer{
 .results-area{
     box-shadow: 1px 1px 20px white;
 }
+
+.customer-chats-bg{
+    background-image: url(./assets/chats.jpg);
+    background-size: cover;
+    background-position-y: -50vh;
+}
+
+.customer-chats-bg div{
+    box-shadow: 2px 2px 10px black;
+}
+
+#loader-parent{
+    box-shadow: none;
+}

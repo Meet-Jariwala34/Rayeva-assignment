@@ -9,6 +9,7 @@ import LoginAdmin from './pages/login/LoginAdmin'
 import SignUp from './pages/login/SignUp'
 import NotFound from './pages/error/NotFound'
 import Admin from './pages/admin/Admin'
+import Customer from './pages/customer/Customer'
 import { ToastContainer } from 'react-toastify';
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL
@@ -25,6 +26,7 @@ export default function App() {
         <Route path='/admin-login' element={<LoginAdmin/>}/>
         <Route path='/signup' element={<SignUp/>}/>
         <Route path='/admin/dashboard' element={<Admin/>}/>
+        <Route path='/user/chats' element={<Customer/>}/>
         <Route path='/*' element={<NotFound/>}/>
       </Routes>
       <Footer/>

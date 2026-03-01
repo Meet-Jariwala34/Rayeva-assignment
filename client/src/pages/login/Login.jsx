@@ -6,10 +6,13 @@ import {gsap} from 'gsap'
 import {ScrollTrigger} from 'gsap/ScrollTrigger'
 import axios from 'axios'
 import {backendUrl} from '../../App'
+import { useNavigate } from 'react-router-dom'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function login() {
+
+    const navigate = useNavigate();
 
     const [isEmail, setIsEmail] = useState("");
     const [isPassword, setIsPassword] = useState("");
@@ -40,6 +43,7 @@ export default function login() {
             const res = await axios.post(backendUrl+'/api/login/user', {email : isEmail, password : isPassword});
             if(res.data.success){
                 //login successful
+                navigate("/user/chats");
                 console.log(res.data.message);
             }else{
                 console.log(res.data.message);

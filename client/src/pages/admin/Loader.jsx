@@ -20,7 +20,7 @@ export default function Loader() {
     })
 
   return (
-    <div ref={container} className="flex h-50 p-7 w-full flex-col items-center gap-4 relative top-20">
+    <div ref={container} className="flex h-50 p-7 w-full flex-col items-center gap-4 relative top-35">
         <div className='flex h-full p-5 overflow-hidden gap-3'>
             <div className="dot w-4 h-4 bg-green-400 rounded-full opacity-30 shadow-[0_0_15px_rgba(74,222,128,0.5)]"></div>
             <div className="dot w-4 h-4 bg-green-400 rounded-full opacity-30 shadow-[0_0_15px_rgba(74,222,128,0.5)]"></div>

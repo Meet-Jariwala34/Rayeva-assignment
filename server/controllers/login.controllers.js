@@ -42,7 +42,7 @@ const LoginUser = async (req,res) => {
         if(user.length > 0){
             //checking the password
             //password is incorrect
-            if(!bcrypt.compareSync(password, admin[0].password)){
+            if(!bcrypt.compareSync(password, user[0].password)){
                 return res.json({success : false, message : "Invalid password"});
             }
             //password is correct
