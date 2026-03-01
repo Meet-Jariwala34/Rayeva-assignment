@@ -18,7 +18,7 @@ const LoginAdmin = async (req,res) => {
             }
             //password is correct
             else{
-                const token = jwt.sign({id : admin[0]._id, email : admin[0].email}, process.env.JWT_KEY);
+                const token = jwt.sign({id : admin[0]._id, email : admin[0].email}, process.env.JWT_KEY, {expiresIn : '6h'});
                 return res.json({success : true, message : "Login successful", admin : admin[0], token : token});
             }
         }
@@ -47,7 +47,7 @@ const LoginUser = async (req,res) => {
             }
             //password is correct
             else{
-                const token = jwt.sign({id : user[0]._id, email : user[0].email}, process.env.JWT_KEY);
+                const token = jwt.sign({id : user[0]._id, email : user[0].email}, process.env.JWT_KEY, {expiresIn : '6h'});
                 return res.json({success : true, message : "Login successful", user : user[0], token : token});
             }
         }

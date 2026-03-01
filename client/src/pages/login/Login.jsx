@@ -42,7 +42,12 @@ export default function login() {
             }
             const res = await axios.post(backendUrl+'/api/login/user', {email : isEmail, password : isPassword});
             if(res.data.success){
+
                 //login successful
+                const token = res.data.token;
+                const now = Date.now();
+                localStorage.setItem('userToken',token);
+                localStorage.setItem('userExpired',now + 6*60*60*100);
                 navigate("/user/chats");
                 console.log(res.data.message);
             }else{

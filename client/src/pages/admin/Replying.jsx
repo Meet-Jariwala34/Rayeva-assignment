@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import { useEffect, useRef } from "react";
 
 
-export default function Loader() {
+export default function Replying() {
 
     const container = useRef();
 

@@ -1,15 +1,32 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { PackageSearch } from 'lucide-react';
-import Loader from './Loader';
+import Replying from './Replying';
 import axios from 'axios'
 import {toast} from 'react-toastify'
 import {backendUrl} from '../../App'
+import { useNavigate } from 'react-router-dom';
+import Loader from '../../components/Loader';
 
 export default function Admin() {
 
+    const navigate = useNavigate();
+    const [isVerified, setIsVerified] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isResponse, setIsResponse] = useState(null);
     const [isDes, setIsDes] = useState("");
+    const expired = localStorage.getItem('expired');
+    const token = localStorage.getItem('token');
+    let minimumDelay
+    useEffect(() => {
+        const now = Date.now();
+        if(now > expired){
+            toast.error("You are not logged-in !!");
+            navigate('/admin-login');
+        }else{
+            minimumDelay = new Promise(resolve => setTimeout(resolve, 2000)); // 2 seconds
+            handleVerify();
+        }
+    },[])
 
     const handleOnChange = (e) => {
         setIsDes(e.target.value);
@@ -22,6 +39,23 @@ export default function Admin() {
 
     const handleCancle = () => {
         setIsResponse(null)
+    }
+
+    const handleVerify = async () => {
+        try {
+            const res = await axios.get(backendUrl+"/verify/admin", {headers : {token : token}});
+
+            await Promise.all([res, minimumDelay]);
+            if(res.data.success){
+                setIsVerified(true)
+            }else{
+                navigate("/admin-login");
+            }
+
+        } catch (error) {
+            console.log("The error from the catch block")
+            console.log(error);
+        }
     }
 
     const handleGenerate = async () => {
@@ -71,12 +105,16 @@ export default function Admin() {
         }
     }
 
+    if(!isVerified){
+        return (<Loader/>)
+    }
+
     return (
     <div className='h-auto w-screen flex flex-col bg-black relative' >
 
         {/* Only visible when the ai is thinking ... */}
         
-            {isLoading && <Loader/>}
+            {isLoading && <Replying/>}
 
             {!isLoading && isResponse && (
         <div className="results-area h-auto w-auto px-2 py-8 bg-[rgba(255,255,255,0.7)] rounded-2xl top-40 relative text-left flex flex-col gap-3 items-center font-bold ">

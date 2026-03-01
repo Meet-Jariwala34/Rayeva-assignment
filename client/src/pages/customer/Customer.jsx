@@ -3,19 +3,44 @@ import { Send } from 'lucide-react';
 import gsap from 'gsap';
 import axios from 'axios';
 import { backendUrl } from '../../App';
-import Loader from './Loader';
+import Replying from './Replying';
+import Loader from '../../components/Loader';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function Customer() {
 
+  const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(true)
   const [replying, setReplying] = useState(false);
   const [chat, setChat] = useState("");
   const chatContainerRef = useRef(null);
+  const expire = localStorage.getItem('userExpired');
+  const token = localStorage.getItem('userToken');
+  let minimumDelay
 
   const [messages, setMessages] = useState([{
     role : 'bot', content : "Hello! I'm your Rayeva Eco-Guide. How can I help you today? 🌿"
   }])
 
   useEffect(() => {
+
+    //verifying the token
+    const now = Date.now();
+    if(!expire){
+      navigate("/login");
+    }
+    if(now > expire){
+      toast.error("You are not currently logged in ")
+      navigate("/login");
+    }else{
+      minimumDelay = new Promise(resolve => setTimeout(resolve, 2000)); // 2 seconds
+      handleVerify();
+    }
+
+
+
   // 1. Added a check to see if the ref is actually attached
   if (chatContainerRef.current && messages.length > 0) {
 
@@ -52,7 +77,25 @@ export default function Customer() {
       }
     });
   }
+
 }, [messages,replying]);
+
+  const handleVerify = async () => {
+        try {
+            const res = await axios.get(backendUrl+"/verify/user", {headers : {token : token}});
+
+            await Promise.all([res, minimumDelay]);
+            if(res.data.success){
+                setIsLoading(false)
+            }else{
+                navigate("/admin-login");
+            }
+
+        } catch (error) {
+            console.log("The error from the catch block")
+            console.log(error);
+        }
+    }
 
   const aiRes = async (conversation) => {
     
@@ -106,6 +149,9 @@ export default function Customer() {
     await aiRes(updatedMsg);    
   }
 
+  if(isLoading){
+    return (<Loader/>)
+  }
 
   return (
     <div className='h-screen w-screen flex flex-col items-center'>      
@@ -131,8 +177,8 @@ export default function Customer() {
     </div>
   ))}
 
-  {/* replying loader animation */}
-              {replying && <Loader/>} 
+  {/* replying Replying animation */}
+              {replying && <Replying/>} 
 </div>
             <div className='h-1/10 w-full flex items-center justify-between bg-green-300  border-2 rounded-2xl shadow-2xl'>
               <input onKeyDown={handleKeyDown} onChange={handleChat} value={chat} className='h-full w-85/100 p-3 outline-none flex text-2xl items-center ' placeholder='Enter your query' type="text" />

@@ -44,6 +44,8 @@ export default function login() {
                 //login successful
                 console.log(res.data.message);
 
+                const now = Date.now();
+                localStorage.setItem('expired',now + 6*60*60*100);
                 localStorage.setItem('token' , res.data.token);
 
                 navigate('/admin/dashboard');

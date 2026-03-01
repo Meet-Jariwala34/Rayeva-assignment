@@ -8,7 +8,7 @@ const cors = require('cors');
 const aiRoute = require('./routes/ai.route');
 const orderRoute = require('./routes/order.route');
 const chatsRoute = require('./routes/chat.route')
-
+const authenticate = require('./routes/verify.route');
 //middleware
 app.use(express.json());
 app.use(cors());
@@ -22,6 +22,7 @@ app.listen(PORT , () => {
 })
 
 //routes
+app.use("/verify",authenticate);
 app.use("/api", loginRoute);
 app.use("/ai",aiRoute);
 app.use("/order/api",orderRoute);
