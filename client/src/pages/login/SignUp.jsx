@@ -5,6 +5,9 @@ import {useGSAP} from '@gsap/react'
 import {gsap} from 'gsap'
 import {ScrollTrigger} from 'gsap/ScrollTrigger'
 import {backendUrl} from '../../App'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 
 gsap.registerPlugin(ScrollTrigger)
@@ -12,13 +15,14 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function login() {
 
+    const navigate = useNavigate();
     const [isName, setIsName] = useState("");
     const [isEmail, setIsEmail] = useState("");
     const [isPassword, setIsPassword] = useState("");
 
     const handleNameChange = (e) => {
         const name = e.target.value;
-        setIsEmail(name);
+        setIsName(name);
     }
 
     const handleEmailChange = (e) => {
@@ -33,7 +37,7 @@ export default function login() {
 
     const handleOnKeyDown = (e) => {
         if(e.key == "Enter"){
-            handleLogin();
+            handleSignUp();
         }
     }
 
@@ -48,7 +52,14 @@ export default function login() {
             const res = await axios.post(backendUrl+'/api/signup/user', details);
             if(res.data.success){
                 //login successful
+                toast.success("You have successfully Created an Account")
+                toast("Please now Log-in with your Id ")
+
                 console.log(res.data.message);
+                setIsName("")
+                setIsEmail("")
+                setIsPassword("")
+                navigate("/login")
             }else{
                 console.log(res.data.message);
             }

@@ -15,6 +15,13 @@ const userSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
+    mood : {
+        type : Number,
+        default : 1,
+    },
+    lastConversation : {
+        type : Array,
+    }
 });
 
 const User = mongoose.model('User', userSchema);

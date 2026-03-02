@@ -88,7 +88,7 @@ export default function Customer() {
             if(res.data.success){
                 setIsLoading(false)
             }else{
-                navigate("/admin-login");
+                navigate("/login");
             }
 
         } catch (error) {
@@ -113,6 +113,7 @@ export default function Customer() {
 
         console.log("Checking the with orderRes ....")
         console.log(result.data.AIreply.orderId)
+        console.log(result.data.AIreply.mood);
         if(result.data.AIreply.orderId !== null){
           console.log("updating new message after order found")
           setMessages(prev => [...prev, { role: 'bot', content: result.data.withOrderRes.response }]);

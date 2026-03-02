@@ -6,6 +6,7 @@ import {toast} from 'react-toastify'
 import {backendUrl} from '../../App'
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/Loader';
+import gsap from 'gsap';
 
 export default function Admin() {
 
@@ -109,6 +110,96 @@ export default function Admin() {
         return (<Loader/>)
     }
 
+
+    const demoData = [
+    {
+    name: "Meet", 
+    lastConversation: [{role: "bot", content: "Hi"}, {role: "user", content: "Help me!"}], 
+    mood: -1 
+  }, // ✅ Active & Urgent
+    {
+    name: "Guest_102", 
+    lastConversation: [{role: "bot", content: "Hi"}], 
+    mood: 1 
+  }, // ❌ Ghost User (Length 1)
+    {
+    name: "Aman", 
+    lastConversation: [{role: "bot", content: "Hi"}, {role: "user", content: "Thanks!"}], 
+    mood: 1 
+  }, // ✅ Active & Happy
+  { 
+    name: "Aarav Sharma", 
+    lastConversation: [{role: "bot", content: "Hi"}, {role: "user", content: "My payment failed but money was deducted!"}], 
+    mood: -1,
+    time: "2 mins ago"
+  }, // 🔥 URGENT: High Escalation
+  { 
+    name: "Sanya Iyer", 
+    lastConversation: [{role: "bot", content: "Welcome! How can I help?"}, {role: "user", content: "I love the new mountain trekking guide, thanks!"}], 
+    mood: 1,
+    time: "5 mins ago"
+  }, // ✅ SATISFIED: Positive Feedback
+  { 
+    name: "John Doe", 
+    lastConversation: [{role: "bot", content: "Hello!"}], 
+    mood: 1,
+    time: "Just now"
+  }, // 👻 GHOST: Should be filtered out (Length = 1)
+  { 
+    name: "Rohan Varma", 
+    lastConversation: [{role: "bot", content: "Hi"}, {role: "user", content: "Where can I find the terms and conditions?"}], 
+    mood: 0,
+    time: "15 mins ago"
+  }, // 💬 NEUTRAL: Simple Inquiry
+  { 
+    name: "Priya Das", 
+    lastConversation: [{role: "bot", content: "Hi"}, {role: "user", content: "The app keeps crashing when I upload photos. Fix it!!"}], 
+    mood: -0.8,
+    time: "8 mins ago"
+  }, // ⚠️ ESCALATED: Frustrated user
+  { 
+    name: "Vikram Singh", 
+    lastConversation: [{role: "bot", content: "Hi"}, {role: "user", content: "Can I get a discount for a group of 10?"}], 
+    mood: 0.2,
+    time: "25 mins ago"
+  }, // 💬 NEUTRAL: Potential Customer
+  { 
+    name: "Unknown Guest", 
+    lastConversation: [{role: "bot", content: "Hi"}], 
+    mood: 1,
+    time: "1 hour ago"
+  }, // 👻 GHOST: Should be filtered out (Length = 1)
+  { 
+    name: "Ananya Rao", 
+    lastConversation: [{role: "bot", content: "Hi"}, {role: "user", content: "This is the worst service I have ever used. Refund me."}], 
+    mood: -1,
+    time: "1 min ago"
+  }, // 🔥 URGENT: High Escalation (Angry)
+  { 
+    name: "Chris Evans", 
+    lastConversation: [{role: "bot", content: "Hi"}, {role: "user", content: "Is the Manali trip available in December?"}], 
+    mood: 0.1,
+    time: "40 mins ago"
+  }, // 💬 NEUTRAL: General Question
+  { 
+    name: "Meera Patel", 
+    lastConversation: [{role: "bot", content: "Hi"}, {role: "user", content: "Thank you for the quick response, very helpful!"}], 
+    mood: 0.9,
+    time: "12 mins ago"
+  }  // ✅ SATISFIED: Polite user
+];
+
+    gsap.to(".escalated-card-border", {
+  boxShadow: "0px 0px 15px 8px rgba(255, 0, 0, 0.6)",
+  repeat: -1,
+  yoyo: true,
+  duration: 1,
+  ease: "sine.inOut"
+});
+
+// Your logic:
+const displayUsers = demoData.filter(user => user.lastConversation.length > 1);
+
     return (
     <div className='h-auto w-screen flex flex-col bg-black relative' >
 
@@ -159,8 +250,28 @@ export default function Admin() {
         </div>
 
         {/* Chats */}
-        <div className='h-screen w-full flex flex-col bg-gray-300 z-11'>
+        <div className='h-screen w-full flex flex-col items-center gap-6 bg-black p-3'>
+            {
+                displayUsers.filter(u => u.mood < 0 ).map((user,idx)=>(
+                    <div key={idx} className="h-12 escalated-card-border w-80/100 flex justify-center items-center bg-red-600 rounded-2xl relative">
+                        <div className='h-10 overflow-hidden w-99/100 p-2 flex flex-row items-center rounded-2xl bg-gray-400 text-white'>
+                        <div className='h-full w-2/10 border-r-white border-r-2 text-lg overflow-hidden font-bold flex items-center justify-center'>{user.name}</div>
+                        <div className='flex p-1 gap-5 flex-row items-center justify-start'><span className='text-lg'>Last Conversation : </span><div className='flex flex-row items-baseline-last font-bold text-red-700'>{user.lastConversation[user.lastConversation.length - 1].content}</div></div>
+                        <div className='flex p-1 gap-5 flex-row items-center justify-start absolute top-2 right-4'><div className='flex flex-row items-baseline-last font-bold text-red-700'>Escalated</div></div>
+                    </div>
+                    </div>
+                ))}
 
+            { displayUsers.filter(u => u.mood > 0 ).map((user,idx)=>(
+                    <div key={idx} className="h-12 w-80/100 flex justify-center items-center bg-green-600 rounded-2xl relative">
+                        <div className='h-10 overflow-hidden w-99/100 p-2 flex flex-row items-center rounded-2xl bg-gray-400 text-white'>
+                        <div className='h-full w-2/10 border-r-white border-r-2 text-lg overflow-hidden font-bold flex items-center justify-center'>{user.name}</div>
+                        <div className='flex p-1 gap-5 flex-row items-center justify-start'><span className='text-lg'>Last Conversation : </span><div className='flex flex-row items-baseline-last font-bold text-green-700'>{user.lastConversation[user.lastConversation.length - 1].content}</div></div>
+                        <div className='flex p-1 gap-5 flex-row items-center justify-start absolute top-2 right-4'><div className='flex flex-row items-baseline-last font-bold text-green-700'>Resolved</div></div>
+                    </div>
+                    </div>
+                ))
+            }
         </div>
     </div>
     )

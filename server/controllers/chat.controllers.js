@@ -1,6 +1,7 @@
 const {GoogleGenAI} = require('@google/genai');
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const Order = require('../models/order.model');
+const User = require('../models/user.model');
 
 const ai = new GoogleGenAI({apiKey: GEMINI_API_KEY});
 
@@ -77,6 +78,8 @@ INSTRUCTION:
 If "RAY-" is anywhere in the HISTORY or the USER QUERY, extract it into "orderId". 
 If you find it, DO NOT ask for it again. 
 Instead, acknowledge it (e.g., "I see your order RAY-123...").
+If the mood of user is frustrated or anger or any other negative emotion than give the mood : -1 
+
 
 RETURN JSON ONLY:
 { "response": "...", "mood": 1, "orderId": "RAY-XXXX or null" }
@@ -95,6 +98,8 @@ let result2 = {
 }
 
 console.log("First API response",jsonRes);
+await User.updateOne({mood : jsonRes.mood});
+await User.updateOne({lastConversation : chat});
 
 if(jsonRes.orderId != null){
     console.log("OrderId is present")
