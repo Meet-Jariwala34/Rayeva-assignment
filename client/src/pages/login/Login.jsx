@@ -47,7 +47,8 @@ export default function login() {
                 const token = res.data.token;
                 const now = Date.now();
                 localStorage.setItem('userToken',token);
-                localStorage.setItem('userExpired',now + 6*60*60*100);
+                localStorage.setItem('userExpired',now + 6*60*60*1000);
+                console.log(res.data.user)
                 navigate("/user/chats");
                 console.log(res.data.message);
             }else{

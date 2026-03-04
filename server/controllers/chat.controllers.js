@@ -97,15 +97,33 @@ let result2 = {
     response : "not"
 }
 
-console.log("First API response",jsonRes);
-await User.updateOne({mood : jsonRes.mood});
-await User.updateOne({lastConversation : chat});
+// console.log("First API response",jsonRes);
+// await User.updateOne({mood : jsonRes.mood});
+// await User.updateOne({lastConversation : chat});
 
 if(jsonRes.orderId != null){
     console.log("OrderId is present")
     const order = await Order.findOne({orderId : jsonRes.orderId})
     if(order){
         console.log("Order with orderId is found")
+
+        // Find the user who had given the order !!
+        const user = await User.findById(order.user);
+        await User.updateOne({_id : order.user},{mood : jsonRes.mood, lastConversation : chat})
+
+        //updated
+        const updatedData ={
+            name : user.name,
+            mood : jsonRes.mood,
+            lastConversation : chat
+        }
+
+        const io = req.app.get('socketio');
+        if (io) {
+            io.to("admin-room").emit("updated-data", updatedData);
+            console.log("📢 Real-time update sent to Admin!");
+        }
+
         result2 = await responseWithOrderId(order);
     console.log("result two is called...")
     }else{

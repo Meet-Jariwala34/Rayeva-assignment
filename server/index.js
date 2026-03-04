@@ -8,18 +8,40 @@ const cors = require('cors');
 const aiRoute = require('./routes/ai.route');
 const orderRoute = require('./routes/order.route');
 const chatsRoute = require('./routes/chat.route')
+const fetchUser = require('./routes/user.route');
 const authenticate = require('./routes/verify.route');
-//middleware
-app.use(express.json());
-app.use(cors());
+const http = require('http');
+const {Server} = require('socket.io');
+
+//createing the server
+const server = http.createServer(app)
+const io = new Server(server,{
+    cors : {
+        origin : "http://localhost:5173"
+    }
+});
+app.set('socketio',io);
+
+server.listen(PORT , () => {
+    console.log(`Server is running on the port ${PORT}`)
+})
 
 // Connect to the database
 
 connectDB();
 
-app.listen(PORT , () => {
-    console.log(`Server is running on the port ${PORT}`)
+//server connection
+io.on("connection",(socket)=>{
+    console.log("User is connected with id : ", socket.id)
+    socket.on("admin-join",()=>{
+        console.log("Admin is joined")
+        socket.join("admin-room");
+    })
 })
+
+//middleware
+app.use(express.json());
+app.use(cors());
 
 //routes
 app.use("/verify",authenticate);
@@ -27,4 +49,6 @@ app.use("/api", loginRoute);
 app.use("/ai",aiRoute);
 app.use("/order/api",orderRoute);
 app.use("/customer/ai", chatsRoute)
+app.use("/user",fetchUser);
 
+module.exports = {io, server}

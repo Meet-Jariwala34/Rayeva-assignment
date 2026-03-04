@@ -7,10 +7,13 @@ import {backendUrl} from '../../App'
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/Loader';
 import gsap from 'gsap';
+import {io} from 'socket.io-client';
+const socketBackend = import.meta.env.VITE_BACKEND_URL
+const socket = io(socketBackend)
 
 export default function Admin() {
-
     const navigate = useNavigate();
+    const [userList, setUserList] = useState([]);
     const [isVerified, setIsVerified] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isResponse, setIsResponse] = useState(null);
@@ -18,6 +21,24 @@ export default function Admin() {
     const expired = localStorage.getItem('expired');
     const token = localStorage.getItem('token');
     let minimumDelay
+
+    const fetchUsers = async () => {
+        try {
+            const res = await axios.get(backendUrl+"/user/fetchUser");
+            console.log(res)
+            if(res.data.success){
+                console.log(res.data.message)
+                setUserList(res.data.userData);
+            }else{
+                console.log("Fail to fetch the users")
+            }
+        } catch (error) {
+            console.log("Error from fetchUser catch");
+            toast.error(error.message);
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         const now = Date.now();
         if(now > expired){
@@ -27,13 +48,37 @@ export default function Admin() {
             minimumDelay = new Promise(resolve => setTimeout(resolve, 2000)); // 2 seconds
             handleVerify();
         }
+
+        socket.emit("admin-join")
+        fetchUsers();
+
+        socket.on("updated-data",(data)=>{
+            setUserList(prev => {
+                const existingIndex = prev.findIndex(u => u.name === data.name);
+    if (existingIndex !== -1) {
+        // Update existing user and move to top
+        const updatedList = [...prev];
+        updatedList[existingIndex] = data;
+        return [updatedList[existingIndex], ...updatedList.filter((_, i) => i !== existingIndex)];
+    }
+    // New user? Add to top
+    toast.info("Users are updated")
+    return [data, ...prev];
+})
+        })
+
+        return () => {
+        socket.off("updated-data"); // This "unplugs" the ear when you leave the page
+    };
+
     },[])
+
 
     const handleOnChange = (e) => {
         setIsDes(e.target.value);
     }
 
-    const handleOnInput =  (e) => {
+    const handleOnInput = (e) => {
         e.target.style.height = "auto";
         e.target.style.height = `${e.target.scrollHeight}px`;
     }
@@ -252,23 +297,23 @@ const displayUsers = demoData.filter(user => user.lastConversation.length > 1);
         {/* Chats */}
         <div className='h-screen w-full flex flex-col items-center gap-6 bg-black p-3'>
             {
-                displayUsers.filter(u => u.mood < 0 ).map((user,idx)=>(
+                userList.filter(u => u.mood < 0 ).map((user,idx)=>(
                     <div key={idx} className="h-12 escalated-card-border w-80/100 flex justify-center items-center bg-red-600 rounded-2xl relative">
                         <div className='h-10 overflow-hidden w-99/100 p-2 flex flex-row items-center rounded-2xl bg-gray-400 text-white'>
-                        <div className='h-full w-2/10 border-r-white border-r-2 text-lg overflow-hidden font-bold flex items-center justify-center'>{user.name}</div>
-                        <div className='flex p-1 gap-5 flex-row items-center justify-start'><span className='text-lg'>Last Conversation : </span><div className='flex flex-row items-baseline-last font-bold text-red-700'>{user.lastConversation[user.lastConversation.length - 1].content}</div></div>
-                        <div className='flex p-1 gap-5 flex-row items-center justify-start absolute top-2 right-4'><div className='flex flex-row items-baseline-last font-bold text-red-700'>Escalated</div></div>
-                    </div>
+                            <div className='h-full w-2/10 border-r-white border-r-2 text-lg overflow-hidden font-bold flex items-center justify-center'>{user.name}</div>
+                            <div className='flex p-1 flex-row items-center justify-start w-7/10 overflow-x-scroll'><span className='text-lg whitespace-nowrap w-2/7'>Last Conversation : </span><div className='flex flex-row items-baseline-last font-bold overflow-x-scroll text-red-700 whitespace-nowrap'>{user.lastConversation[user.lastConversation.length - 1].content}</div></div>
+                            <div className='flex p-1 gap-5 flex-row items-center justify-start absolute top-2 right-4'><div className='flex flex-row items-baseline-last font-bold text-red-700'>Escalated</div></div>
+                        </div>
                     </div>
                 ))}
 
-            { displayUsers.filter(u => u.mood > 0 ).map((user,idx)=>(
+            { userList.filter(u => u.mood > 0 ).map((user,idx)=>(
                     <div key={idx} className="h-12 w-80/100 flex justify-center items-center bg-green-600 rounded-2xl relative">
                         <div className='h-10 overflow-hidden w-99/100 p-2 flex flex-row items-center rounded-2xl bg-gray-400 text-white'>
-                        <div className='h-full w-2/10 border-r-white border-r-2 text-lg overflow-hidden font-bold flex items-center justify-center'>{user.name}</div>
-                        <div className='flex p-1 gap-5 flex-row items-center justify-start'><span className='text-lg'>Last Conversation : </span><div className='flex flex-row items-baseline-last font-bold text-green-700'>{user.lastConversation[user.lastConversation.length - 1].content}</div></div>
-                        <div className='flex p-1 gap-5 flex-row items-center justify-start absolute top-2 right-4'><div className='flex flex-row items-baseline-last font-bold text-green-700'>Resolved</div></div>
-                    </div>
+                            <div className='h-full w-2/10 border-r-white border-r-2 text-lg overflow-y-hidden font-bold flex items-center justify-center'>{user.name}</div>
+                            <div className='flex p-1 flex-row items-center justify-start w-7/10 overflow-x-scroll'><span className='text-lg whitespace-nowrap w-2/7'>Last Conversation : </span><div className='flex flex-row items-baseline-last font-bold overflow-x-scroll text-green-700 whitespace-nowrap'>{user.lastConversation[user.lastConversation.length - 1].content}</div></div>
+                            <div className='flex p-1 gap-5 flex-row items-center justify-start absolute top-2 right-4'><div className='flex flex-row items-baseline-last font-bold text-green-700'>Resolved</div></div>
+                        </div>
                     </div>
                 ))
             }

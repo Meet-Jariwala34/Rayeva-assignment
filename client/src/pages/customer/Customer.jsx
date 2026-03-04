@@ -11,7 +11,6 @@ import { toast } from 'react-toastify';
 export default function Customer() {
 
   const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = useState(true)
   const [replying, setReplying] = useState(false);
   const [chat, setChat] = useState("");
