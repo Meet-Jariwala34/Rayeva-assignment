@@ -1,15 +1,15 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react';
 import { PackageSearch } from 'lucide-react';
 import Replying from './Replying';
-import axios from 'axios'
-import {toast} from 'react-toastify'
-import {backendUrl} from '../../App'
+import axios from 'axios';
+import {toast} from 'react-toastify';
+import {backendUrl} from '../../App';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/Loader';
 import gsap from 'gsap';
 import {io} from 'socket.io-client';
 const socketBackend = import.meta.env.VITE_BACKEND_URL
-const socket = io(socketBackend)
+const socket = io(socketBackend);
 
 export default function Admin() {
     const navigate = useNavigate();
