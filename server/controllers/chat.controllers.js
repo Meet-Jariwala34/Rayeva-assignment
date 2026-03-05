@@ -49,7 +49,7 @@ const conversation = async (req,res) => {
 
     try {
         const result = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-lite',
+            model: 'gemini-3-flash-preview',
             generationConfig: {
                 responseMimeType: "application/json",   //Forcing the Ai to respond in json format
                 temperature: 0.3, // Forces the AI to be more factual and follow rules strictly
