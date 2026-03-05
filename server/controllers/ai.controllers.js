@@ -8,7 +8,7 @@ const ai = new GoogleGenAI({apiKey: GEMINI_API_KEY});
 const main = async (req,res) => {
     const {description} = req.body;
     const result = await ai.models.generateContent({
-    model: 'gemini-2.5-flash-lite',
+    model: 'gemini-3-flash-preview',
     generationConfig: { 
     responseMimeType: "application/json" 
     },
