@@ -52,14 +52,6 @@ export default function Admin() {
         socket.emit("admin-join")
         fetchUsers();
 
-        gsap.to(".escalated-card-border", {
-  boxShadow: "0px 0px 15px 8px rgba(255, 0, 0, 0.6)",
-  repeat: -1,
-  yoyo: true,
-  duration: 1,
-  ease: "sine.inOut"
-});
-
         socket.on("updated-data",(data)=>{
             setUserList(prev => {
                 const existingIndex = prev.findIndex(u => u.name === data.name);
@@ -242,7 +234,13 @@ export default function Admin() {
   }  // ✅ SATISFIED: Polite user
 ];
 
-    
+    gsap.to(".escalated-card-border", {
+  boxShadow: "0px 0px 15px 8px rgba(255, 0, 0, 0.6)",
+  repeat: -1,
+  yoyo: true,
+  duration: 1,
+  ease: "sine.inOut"
+});
 
 // Your logic:
 const displayUsers = demoData.filter(user => user.lastConversation.length > 1);
