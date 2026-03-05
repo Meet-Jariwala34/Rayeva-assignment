@@ -4,9 +4,9 @@
   "description": "Uses the AI ( Gemini for response and categories suggestion ) , also handling routes and request and authentication.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server":"nodemon server.js",
+    "start": "node server.js"
   },
-  "start": "nodemon index.js",
   "author": "",
   "license": "ISC",
   "dependencies": {
