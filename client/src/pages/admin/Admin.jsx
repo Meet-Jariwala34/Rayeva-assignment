@@ -52,6 +52,14 @@ export default function Admin() {
         socket.emit("admin-join")
         fetchUsers();
 
+        gsap.to(".escalated-card-border", {
+  boxShadow: "0px 0px 15px 8px rgba(255, 0, 0, 0.6)",
+  repeat: -1,
+  yoyo: true,
+  duration: 1,
+  ease: "sine.inOut"
+});
+
         socket.on("updated-data",(data)=>{
             setUserList(prev => {
                 const existingIndex = prev.findIndex(u => u.name === data.name);
@@ -70,16 +78,8 @@ export default function Admin() {
         return () => {
         socket.off("updated-data"); // This "unplugs" the ear when you leave the page
     };
-
-        gsap.to(".escalated-card-border", {
-  boxShadow: "0px 0px 15px 8px rgba(255, 0, 0, 0.6)",
-  repeat: -1,
-  yoyo: true,
-  duration: 1,
-  ease: "sine.inOut"
-});
         
-    },[])
+    },[userList, isLoading, isDes])
 
 
     const handleOnChange = (e) => {
