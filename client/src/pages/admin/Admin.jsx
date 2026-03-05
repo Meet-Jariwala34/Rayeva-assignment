@@ -79,7 +79,7 @@ export default function Admin() {
         socket.off("updated-data"); // This "unplugs" the ear when you leave the page
     };
         
-    },[userList, isLoading, isDes])
+    },[])
 
 
     const handleOnChange = (e) => {
