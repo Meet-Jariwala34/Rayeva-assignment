@@ -1,3 +1,7 @@
+<!-- Live Links -->
+#NOTE : I am using Free Render and Gemini studio for backend and AI simultaniously , So kindly please wait for 10-15 second so that my backend refresh .
+
+https://rayeva-assignment.vercel.app
 <!-- Landing Page & User Experience -->
 
 Gateway Design : A professional, responsive landing page that introduces the Rayeva ecosystem, highlighting its commitment to sustainable commerce.
