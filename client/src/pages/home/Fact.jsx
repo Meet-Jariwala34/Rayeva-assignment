@@ -7,6 +7,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function Fact() {
 
+  // Animation from middle to side
   useGSAP( () =>{
     gsap.from('.slide1', {
       x : 200,
@@ -36,6 +37,7 @@ export default function Fact() {
     <div className=' h-screen w-screen p-12 bg-gray-300'>
       <div className='page2 h-full w-full flex flex-row items-center justify-center'>
 
+      {/* Left Sided Dynamic */}
         <div className='slide1 h-full w-1/3 gap-8 flex flex-col justify-center items-center text-black'>
           <div className='montserrat font-bold text-5xl text-center overflow-hidden'>EMPLOYEE <br/> PORTAL</div>
           <div className='hover:scale-110'>
@@ -43,6 +45,7 @@ export default function Fact() {
           </div>
         </div>
 
+        {/* Middle Static */}
         <div id='middle' className='h-full w-1/3 text-white flex justify-center items-center text-5xl font-bold z-4'>
           <div className='h-1/3 w-6/10 montserrat text-center overflow-hidden'>
             <h1 className='overflow-hidden'>JOIN US</h1>
@@ -50,6 +53,7 @@ export default function Fact() {
           </div>
         </div>
 
+        {/* Right sided Dynamic */}
         <div className='slide2 h-full w-1/3 gap-8 flex flex-col justify-center items-center text-black'>
           <div className='montserrat font-bold text-5xl text-center overflow-hidden'>CUSTOMER <br /> SUPPORT </div>
           <div className='hover:scale-110'>

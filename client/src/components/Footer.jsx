@@ -8,7 +8,7 @@ export default function Footer() {
         <div>
           <div className='text-2xl font-thin w-auto h-auto overflow-hidden'>Email:officialmeetjariwala@gmail.com</div>
           <div className='text-2xl font-thin w-auto h-auto overflow-hidden'>Phone: +91 9428867728</div>
-          <div className='text-2xl font-thin w-auto h-auto overflow-hidden'>Address: 123, Main Street, City, Country</div>
+          <div className='text-2xl font-thin w-auto h-auto overflow-hidden'>Magdalla Gam , Surat ,Gujarat</div>
         </div>
       </div>
     </footer>

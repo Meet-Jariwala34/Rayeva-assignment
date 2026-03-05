@@ -4,6 +4,7 @@ const Product = require('../models/product.model')
 
 const ai = new GoogleGenAI({apiKey: GEMINI_API_KEY});
 
+//Create the suggested AI response
 const main = async (req,res) => {
     const {description} = req.body;
     const result = await ai.models.generateContent({
@@ -11,6 +12,8 @@ const main = async (req,res) => {
     generationConfig: { 
     responseMimeType: "application/json" 
     },
+
+    // Prompt 
     contents: `Return a JSON object for the following product description. 
     Do not include any text outside the JSON.
     And look for keywords like "GOTS," "FSC," or "Carbon Neutral"
@@ -24,17 +27,21 @@ const main = async (req,res) => {
     Description: "${description}"`,
     });
 
+    // Converting text format to json foramt
     const resText = result.candidates[0].content.parts[0].text;
     const cleanData = resText.replace(/```json/g, "") // Removes the opening ```json
                             .replace(/```/g, "")     // Removes the closing ```
                             .trim();
 
     const jsonData = JSON.parse(cleanData);
-    res.json({success : true ,result : jsonData})
+    res.json({success : true ,result : jsonData, message : "Ai successfully Response"})
 }
 
+
+// After the approaval of Admin , save it in db
 const dataInsert = async (req,res) =>{
-    const {description , category ,subCategory, seoTags , filter, response} = req.body;
+    try {
+        const {description , category ,subCategory, seoTags , filter} = req.body;
 
     const product = {
         description : description,
@@ -58,7 +65,10 @@ const dataInsert = async (req,res) =>{
 
     const uploadedData = await Product.create(product);
 
-    res.json({success : true, message : "Data is uploaded successfully" , product : uploadedData})
+    res.json({success : true, message : "Data is uploaded successfully" , product : uploadedData, message : "Data is stored in dataBase"})
+    } catch (error) {
+        res.json({success : false, message : error.message})
+    }
 
 }
 

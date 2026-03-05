@@ -16,10 +16,12 @@ gsap.registerPlugin(ScrollTrigger)
 export default function login() {
 
     const navigate = useNavigate();
+    // React Variables
     const [isName, setIsName] = useState("");
     const [isEmail, setIsEmail] = useState("");
     const [isPassword, setIsPassword] = useState("");
 
+    // Functions
     const handleNameChange = (e) => {
         const name = e.target.value;
         setIsName(name);
@@ -41,6 +43,7 @@ export default function login() {
         }
     }
 
+    // Backend Route
     const handleSignUp = async () => {
         //handle login logic here
         try {
@@ -52,25 +55,22 @@ export default function login() {
             const res = await axios.post(backendUrl+'/api/signup/user', details);
             if(res.data.success){
                 //login successful
-                toast.success("You have successfully Created an Account")
-                toast("Please now Log-in with your Id ")
-
-                console.log(res.data.message);
+                toast.success(res.data.message)
+                toast.info("Please now Log-in with your Id ")
                 setIsName("")
                 setIsEmail("")
                 setIsPassword("")
                 navigate("/login")
             }else{
-                console.log(res.data.message);
+                toast.error(res.data.message)
             }
 
         } catch (error){
-            console.log("The outter try-catch error")
-            console.log(error);
+            toast.error(error.message)
         }
     }
 
-
+    // Animation
     useGSAP( () => {
         const tl = gsap.timeline();
         tl.from('.container', {
@@ -89,7 +89,7 @@ export default function login() {
 
     return (
     <div className='container h-screen w-screen flex flex-row items-center justify-center relative'>
-        {/* image side */}
+        {/* Background */}
         <div className='h-full w-6/10'>
             <img src={bgImg} alt='login' className='h-screen w-full object-cover'/>
         </div>
@@ -100,14 +100,15 @@ export default function login() {
             <div id='login-card-left' className='h-full w-1/2 bg-transparent flex flex-col items-center justify-center p-8'>
                 <div className='font-bold text-5xl text-center overflow-hidden text-white'><h1 className='overflow-hidden'>JOIN US </h1></div>
             </div>
-            <div className='h-full w-1/2 bg-white montserrat text-black flex flex-col items-center justify-center gap-6 p-2'>
+            <form onSubmit={(e)=>e.preventDefault()} className='h-full w-1/2 bg-white montserrat text-black flex flex-col items-center justify-center gap-6 p-2'>
                 <div><h2 className='overflow-hidden text-4xl font-bold'>ENTER DETAILS</h2></div>
                 <div><input onChange={handleNameChange} value={isName} className='h-3 w-[25vw] p-4 outline-none border-2 rounded-2xl' type="text" placeholder='Enter your Name'/></div>
                 <div><input onChange={handleEmailChange} value={isEmail} className='h-3 w-[25vw] p-4 outline-none border-2 rounded-2xl' type="email" placeholder='Enter your Email'/></div>
                 <div><input onKeyDown={handleOnKeyDown} onChange={handlePasswordChange} value={isPassword} className='h-3 w-[25vw] p-4 outline-none border-2 rounded-2xl' type="password" placeholder='Enter your Password'/></div>
                 <div><button onClick={handleSignUp} className='h-3 w-[25vw] p-6 rounded-2xl bg-green-400 text-white font-bold overflow-hidden text-center flex flex-col justify-center cursor-pointer items-center'>CREATE ACCOUNT</button></div>
+                {/* If Already accound Exist -> Go to login */}
                 <div>Already have Account ? <Link to='/login' className='text-blue-400'>Login </Link>  </div>
-            </div>
+            </form>
         </div>
     </div>
     )

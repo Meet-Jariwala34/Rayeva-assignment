@@ -13,6 +13,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function Cell() {
 
+  // One-by-One Fade up 
   useGSAP( () => {
     gsap.from('#gallery div', {
       y : 10,
@@ -28,10 +29,13 @@ export default function Cell() {
 
   return (
     <div className='page3 h-screen w-screen flex flex-col items-center'>
+
+      {/* Header */}
       <div className='h-1/4 w-screen flex justify-center items-center'>
         <div className='montserrat text-5xl text-black font-extrabold w-auto h-auto overflow-hidden'>OUR PRODUCT</div>
       </div>
 
+      {/* Gallery Photos */}
       <div id='gallery' className='h-3/4 w-screen flex flex-wrap gap-4 justify-evenly mb-4 items-center'>
         <div className='h-3/7 w-1/4' ><img src={img1} className='h-full w-full object-cover' alt="product image" /></div>
         <div className='h-3/7 w-1/4' ><img src={img2} className='h-full w-full object-cover' alt="product image" /></div>

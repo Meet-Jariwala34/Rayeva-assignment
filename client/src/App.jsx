@@ -12,6 +12,7 @@ import Admin from './pages/admin/Admin'
 import Customer from './pages/customer/Customer'
 import { ToastContainer } from 'react-toastify';
 
+// Importing the Backend Url
 export const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 export default function App() {

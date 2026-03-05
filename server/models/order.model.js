@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
+//Schemas
 const orderSchema = {
-    // Link to the User who bought it
+    // Link to the UserId who bought it
     user: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User', 
