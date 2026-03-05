@@ -71,6 +71,14 @@ export default function Admin() {
         socket.off("updated-data"); // This "unplugs" the ear when you leave the page
     };
 
+        gsap.to(".escalated-card-border", {
+  boxShadow: "0px 0px 15px 8px rgba(255, 0, 0, 0.6)",
+  repeat: -1,
+  yoyo: true,
+  duration: 1,
+  ease: "sine.inOut"
+});
+        
     },[])
 
 
@@ -234,13 +242,7 @@ export default function Admin() {
   }  // ✅ SATISFIED: Polite user
 ];
 
-    gsap.to(".escalated-card-border", {
-  boxShadow: "0px 0px 15px 8px rgba(255, 0, 0, 0.6)",
-  repeat: -1,
-  yoyo: true,
-  duration: 1,
-  ease: "sine.inOut"
-});
+    
 
 // Your logic:
 const displayUsers = demoData.filter(user => user.lastConversation.length > 1);
